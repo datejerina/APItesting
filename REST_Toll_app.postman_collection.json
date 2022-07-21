@@ -1,0 +1,473 @@
+{
+	"info": {
+		"_postman_id": "b2acf56f-d581-4f5f-93eb-9a6c2f6bc3cc",
+		"name": "REST Toll app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6612990"
+	},
+	"item": [
+		{
+			"name": "Add character",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"    postman.setEnvironmentVariable(\"character_id\", jsonData.id);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"time_response\")));\r",
+							"}); \r",
+							"\r",
+							"pm.test(\"Character Name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql(pm.collectionVariables.get(\"name\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Character realName\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.realName).to.eql(pm.collectionVariables.get(\"realName\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Character isAlive\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.isAlive).to.eql(pm.collectionVariables.get(\"is_alive\"));\r",
+							"});\r",
+							"\r",
+							"postman.setNextRequest(\"Search created character\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							" pm.collectionVariables.set(\"is_alive\", \"true\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"thumbnail\": \"\",\r\n  \"name\": \"{{name}}\",\r\n  \"realName\": \"{{realName}}\",\r\n  \"location\": \"Beyond the Wall\",\r\n  \"isAlive\": \"{{is_alive}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://restool-sample-app.herokuapp.com/api/character",
+					"protocol": "https",
+					"host": [
+						"restool-sample-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"character"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search created character",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//pm.globals.set(\"character_id\", \"57gZZ64R6HlL\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"time_response\")));\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Character Name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql(pm.collectionVariables.get(\"name\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Character realName\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.realName).to.eql(pm.collectionVariables.get(\"realName\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Character isAlive\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.isAlive).to.eql(pm.collectionVariables.get(\"is_alive\"));\r",
+							"});\r",
+							"\r",
+							"postman.setNextRequest(\"Modify Character\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://restool-sample-app.herokuapp.com/api/character/{{character_id}}",
+					"protocol": "https",
+					"host": [
+						"restool-sample-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"character",
+						"{{character_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify Character",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"time_response\")));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"ok\");\r",
+							"});\r",
+							"\r",
+							"postman.setNextRequest(\"Verify character changed\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							" pm.collectionVariables.set(\"is_alive\", \"false\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "isAlive",
+							"value": "{{is_alive}}",
+							"type": "text"
+						},
+						{
+							"key": "location",
+							"value": "Winterfell",
+							"type": "text"
+						},
+						{
+							"key": "numberTest",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://restool-sample-app.herokuapp.com/api/character/{{character_id}}",
+					"protocol": "https",
+					"host": [
+						"restool-sample-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"character",
+						"{{character_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify character changed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    console.log(\"respuesta:\", pm.response);\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"time_response\")));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify Alive\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    console.log(\"json\",jsonData.isAlive);\r",
+							"    pm.expect(jsonData.isAlive).to.eql(pm.collectionVariables.get(\"is_alive\"));\r",
+							"});\r",
+							"\r",
+							"postman.setNextRequest(\"Delete character\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://restool-sample-app.herokuapp.com/api/character/{{character_id}}",
+					"protocol": "https",
+					"host": [
+						"restool-sample-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"character",
+						"{{character_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete character",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"ok\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"time_response\")));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://restool-sample-app.herokuapp.com/api/character/{{character_id}}",
+					"protocol": "https",
+					"host": [
+						"restool-sample-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"character",
+						"{{character_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify PUT on deleted character",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"time_response\")));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify body response should not be OK\", function () {\r",
+							"    pm.expect(pm.response.text()).to.not.include(\"ok\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"    pm.collectionVariables.set(\"is_alive\", \"false\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "isAlive",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "location",
+							"value": "Winterfell",
+							"type": "text"
+						},
+						{
+							"key": "numberTest",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://restool-sample-app.herokuapp.com/api/character/{{character_id}}",
+					"protocol": "https",
+					"host": [
+						"restool-sample-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"character",
+						"{{character_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify deleted character",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify empty/undefined body\", function () {\r",
+							"    console.log(pm.response.body);\r",
+							"    pm.expect(pm.response.body).to.be.undefined;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://restool-sample-app.herokuapp.com/api/character/{{character_id}}",
+					"protocol": "https",
+					"host": [
+						"restool-sample-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"character",
+						"{{character_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "character_id",
+			"value": ""
+		},
+		{
+			"key": "time_response",
+			"value": "600"
+		},
+		{
+			"key": "name",
+			"value": "Daniel",
+			"type": "string"
+		},
+		{
+			"key": "is_alive",
+			"value": "true",
+			"type": "string"
+		},
+		{
+			"key": "realName",
+			"value": "TestName",
+			"type": "string"
+		}
+	]
+}
