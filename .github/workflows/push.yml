@@ -17,3 +17,4 @@ jobs:
         with:
           collection: REST_Toll_app.postman_collection.json
           environment: ENV-Game.postman_environment.json
+          reporters: '["cli", "html"]'
