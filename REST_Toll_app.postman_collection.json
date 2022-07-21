@@ -18,6 +18,7 @@
 							"    var jsonData = JSON.parse(responseBody);\r",
 							"    postman.setEnvironmentVariable(\"character_id\", jsonData.id);\r",
 							"});\r",
+							"\r",
 							"pm.test(\"Response time is less than 200ms\", function () {\r",
 							"    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"time_response\")));\r",
 							"}); \r",
@@ -326,9 +327,11 @@
 							"    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"time_response\")));\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Verify body response should not be OK\", function () {\r",
+							"/*pm.test(\"Verify body response should not be OK\", function () {\r",
 							"    pm.expect(pm.response.text()).to.not.include(\"ok\");\r",
-							"});"
+							"});*/\r",
+							"\r",
+							"postman.setNextRequest(\"Verify deleted character\");"
 						],
 						"type": "text/javascript"
 					}
