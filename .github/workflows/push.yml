@@ -17,5 +17,5 @@ jobs:
         with:
           collection: demoblaze.postman_collection.json
           iterationData: data.csv 
-          folder: Filter_category_data
+          folder: Data-driven
           reporters: '["cli", "html"]'
