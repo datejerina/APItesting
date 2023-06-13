@@ -15,6 +15,6 @@ jobs:
       - uses: actions/checkout@master
       - uses: matt-ball/newman-action@master
         with:
-          collection: REST_Toll_app.postman_collection.json
-          environment: ENV-Game.postman_environment.json
+          collection: demoblaze.postman_collection.json
+          iterationData: data.csv        
           reporters: '["cli", "html"]'
