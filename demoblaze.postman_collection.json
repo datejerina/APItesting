@@ -1,0 +1,351 @@
+{
+	"info": {
+		"_postman_id": "ef7c8444-c4da-43af-9284-3f646f36694b",
+		"name": "demoblaze",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6612990"
+	},
+	"item": [
+		{
+			"name": "Data-driven",
+			"item": [
+				{
+					"name": "Filter_category_data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate Item\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    console.log(data.item_find);\r",
+									"    var item_to_find = jsonData.Items.find(x => x.title == data.item_find);\r",
+									"    console.log(item_to_find); \r",
+									"    pm.expect(item_to_find.price).equals(data.expected_price);\r",
+									"    pm.expect(item_to_find.img).contains(data.expected_img);\r",
+									"   \r",
+									"});\r",
+									"\r",
+									"/*\r",
+									"pm.test(\"Validate Item\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var item_to_find = jsonData.Items.find(x => x.title == \"MacBook air\");\r",
+									"    console.log(item_to_find); \r",
+									"    pm.expect(item_to_find.price).equals(700);\r",
+									"    pm.expect(item_to_find.img).contains(\"macbook_air\");\r",
+									"   \r",
+									"});\r",
+									"*/"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"cat\": \"{{categoria}}\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.demoblaze.com/bycat",
+							"protocol": "https",
+							"host": [
+								"api",
+								"demoblaze",
+								"com"
+							],
+							"path": [
+								"bycat"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);    \r",
+							"    let token= pm.response.text().substring(12, pm.response.text().length-2).trim();\r",
+							"    console.log (token);\r",
+							"    pm.collectionVariables.set(\"Auth_token\", token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"daniel147\",\r\n  \"password\": \"ZGFuaWVsMTQ3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.demoblaze.com/login",
+					"protocol": "https",
+					"host": [
+						"api",
+						"demoblaze",
+						"com"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check Token",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(pm.collectionVariables.get(\"Auth_token\"));\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"connection": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.demoblaze.com",
+						"type": "text"
+					},
+					{
+						"key": "Referer",
+						"value": "https://www.demoblaze.com/",
+						"type": "text"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty",
+						"type": "text"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors",
+						"type": "text"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-site",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"token\": {{Auth_token}}}"
+				},
+				"url": {
+					"raw": "https://api.demoblaze.com/check",
+					"protocol": "https",
+					"host": [
+						"api",
+						"demoblaze",
+						"com"
+					],
+					"path": [
+						"check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"daniel\",\r\n  \"password\": \"ZGFuaWVs\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.demoblaze.com/signup",
+					"protocol": "https",
+					"host": [
+						"api",
+						"demoblaze",
+						"com"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filter by category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate Item\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var item_to_find = jsonData.Items.find(x => x.title == pm.collectionVariables.get(\"item_find\"));\r",
+							"    console.log(item_to_find); \r",
+							"    pm.expect(item_to_find.price.toString()).equals(pm.collectionVariables.get(\"expected_price\"));\r",
+							"    pm.expect(item_to_find.img).contains(pm.collectionVariables.get(\"expected_img\"));\r",
+							"   \r",
+							"});\r",
+							"\r",
+							"/*\r",
+							"pm.test(\"Validate Item\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var item_to_find = jsonData.Items.find(x => x.title == \"MacBook air\");\r",
+							"    console.log(item_to_find); \r",
+							"    pm.expect(item_to_find.price).equals(700);\r",
+							"    pm.expect(item_to_find.img).contains(\"macbook_air\");\r",
+							"   \r",
+							"});\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cat\": \"{{categoria}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.demoblaze.com/bycat",
+					"protocol": "https",
+					"host": [
+						"api",
+						"demoblaze",
+						"com"
+					],
+					"path": [
+						"bycat"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "categoria",
+			"value": "phone",
+			"type": "string"
+		},
+		{
+			"key": "item_find",
+			"value": "Nexus 6",
+			"type": "string"
+		},
+		{
+			"key": "expected_price",
+			"value": "650",
+			"type": "string"
+		},
+		{
+			"key": "expected_img",
+			"value": "Nexus_6",
+			"type": "string"
+		}
+	]
+}
