@@ -409,12 +409,12 @@
 			},
 			{
 				"key": "clientSecret",
-				"value": "{{client_secret}}",
+				"value": "${{ secrets.CLIENT_SECRET }}",
 				"type": "string"
 			},
 			{
 				"key": "clientId",
-				"value": "{{client_id}}",
+				"value": "${{ secrets.CLIENT_ID }}",
 				"type": "string"
 			},
 			{
@@ -445,16 +445,6 @@
 		}
 	],
 	"variable": [
-		{
-			"key": "client_id",
-			"value": "67234cdf4e9b4da98af2a0ccba2c2990",
-			"type": "string"
-		},
-		{
-			"key": "client_secret",
-			"value": "03d86cbe56554d2b88784b32b4a17c78",
-			"type": "string"
-		},
 		{
 			"key": "url",
 			"value": "https://api.spotify.com/v1"
