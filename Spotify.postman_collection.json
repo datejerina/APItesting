@@ -1,0 +1,498 @@
+{
+	"info": {
+		"_postman_id": "3b6d5590-e806-4fba-85ab-ca372873cda9",
+		"name": "Spotify",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6612990"
+	},
+	"item": [
+		{
+			"name": "Get User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    //console.log(jsonData);\r",
+							"    pm.collectionVariables.set(\"user_id\", jsonData.id);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/me",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Playlist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData.id);\r",
+							"pm.collectionVariables.set(\"playlist_id\", jsonData.id);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);   \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{name_playlist}}\",\r\n  \"description\": \"{{desc_playlist}}\",\r\n  \"public\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users/{{user_id}}/playlists",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"{{user_id}}",
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get playlist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Verify name playlist\", function () {\r",
+							"    pm.expect(jsonData.name).to.eql(pm.collectionVariables.get(\"name_playlist\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify description playlist\", function () {\r",
+							"    pm.expect(jsonData.description).to.eql(pm.collectionVariables.get(\"desc_playlist\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/playlists/{{playlist_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"playlists",
+						"{{playlist_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Playlist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{update_name_playlist}}\",\r\n  \"description\": \"{{update_desc_playlist}}\",\r\n  \"public\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/playlists/{{playlist_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"playlists",
+						"{{playlist_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get playlist Updated",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData.description)\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Verify name playlist\", function () {\r",
+							"    pm.expect(jsonData.name).to.eql(pm.collectionVariables.get(\"update_name_playlist\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify description playlist\", function () {\r",
+							"    pm.expect(jsonData.description).to.eql(pm.collectionVariables.get(\"update_desc_playlist\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/playlists/{{playlist_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"playlists",
+						"{{playlist_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Track",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.collectionVariables.set(\"snap_id\",jsonData.snapshot_id);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uris\": [\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\",\"spotify:track:5j9PdllFYpPRnHHabceVfQ\"],\r\n    \"position\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/playlists/{{playlist_id}}/tracks",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"playlists",
+						"{{playlist_id}}",
+						"tracks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get tracks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.total).to.eql(2);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/playlists/{{playlist_id}}/tracks",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"playlists",
+						"{{playlist_id}}",
+						"tracks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Tracks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tracks\": [\r\n        {\r\n            \"uri\": \"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\"\r\n        }\r\n    ],\r\n    \"snapshot_id\": \"{{snap_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/playlists/{{playlist_id}}/tracks",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"playlists",
+						"{{playlist_id}}",
+						"tracks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get tracks 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.total).to.eql(1);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/playlists/{{playlist_id}}/tracks",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"playlists",
+						"{{playlist_id}}",
+						"tracks"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "useBrowser",
+				"value": false,
+				"type": "boolean"
+			},
+			{
+				"key": "redirect_uri",
+				"value": "https://www.getpostman.com/oauth2/callback",
+				"type": "string"
+			},
+			{
+				"key": "scope",
+				"value": "playlist-read-private playlist-modify-private",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "https://accounts.spotify.com/api/token",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "https://accounts.spotify.com/authorize",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "Spotify_dat",
+				"type": "string"
+			},
+			{
+				"key": "clientSecret",
+				"value": "{{client_secret}}",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "{{client_id}}",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "client_id",
+			"value": "67234cdf4e9b4da98af2a0ccba2c2990",
+			"type": "string"
+		},
+		{
+			"key": "client_secret",
+			"value": "03d86cbe56554d2b88784b32b4a17c78",
+			"type": "string"
+		},
+		{
+			"key": "url",
+			"value": "https://api.spotify.com/v1"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "playlist_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "name_playlist",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "desc_playlist",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "update_name_playlist",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "update_desc_playlist",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "snap_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
